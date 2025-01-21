@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EGameStates : uint8
 {
-	PreStart,
+	Countdown,
 	Active,
 	GoalReached,
 	Failed,

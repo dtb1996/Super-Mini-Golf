@@ -9,7 +9,7 @@ void UPrimaryLayout::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	// PushInitialScreens();
+	PushInitialScreens();
 }
 
 bool UPrimaryLayout::RegisterLayer(FGameplayTag LayerName, UUILayer* LayerWidget)
@@ -113,7 +113,6 @@ void UPrimaryLayout::PushInitialScreens()
 
 			if (!WidgetClass)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Yellow, TEXT("Invalid WidgetClass, layer: " + it.Key.GetTagName().ToString()));
 				continue;
 			}
 

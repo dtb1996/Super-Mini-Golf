@@ -20,7 +20,7 @@ void AUIHUD::HideMainMenu()
 {
 	if (MainMenu)
 	{
-		MainMenu->RemoveFromViewport();
+		MainMenu->RemoveFromParent();
 		MainMenu = nullptr;
 	}
 }

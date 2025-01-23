@@ -15,22 +15,6 @@ UUserWidget* UUILayer::PushContent(TSoftClassPtr<class UUserWidget> WidgetClass)
 	RequestAsyncLoadWidget(WidgetClass);
 
 	return nullptr;
-
-	//APlayerController* Owner = this->GetOwningPlayer();
-
-	//PushedWidget = CreateWidget<UUserWidget>(Owner, UKismetSystemLibrary::LoadClassAsset_Blocking(WidgetClass)); //TODO: update to use async load
-
-	//CollapseTop();
-
-	//Border->ClearChildren();
-
-	//Stack.Add(PushedWidget);
-
-	//Border->AddChild(PushedWidget);
-
-	//ShowTop();
-
-	//return PushedWidget;
 }
 
 void UUILayer::PopContent()

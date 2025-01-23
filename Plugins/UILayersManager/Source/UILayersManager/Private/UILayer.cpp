@@ -5,35 +5,32 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetStringLibrary.h"
 
-void UUILayer::PushWidget(TSoftClassPtr<UUserWidget> LayerWidget)
-{
-	// TODO: fix this function (may need to be removed)
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("PushWidget() called"));
-}
-
 UUserWidget* UUILayer::PushContent(TSoftClassPtr<class UUserWidget> WidgetClass)
 {
 	if (WidgetClass.IsNull())
 	{
 		return nullptr;
 	}
+	
+	RequestAsyncLoadWidget(WidgetClass);
 
-	APlayerController* Owner = this->GetOwningPlayer();
+	return nullptr;
 
-	PushedWidget = CreateWidget<UUserWidget>(Owner, UKismetSystemLibrary::LoadClassAsset_Blocking(WidgetClass)); //TODO: update to use async load
+	//APlayerController* Owner = this->GetOwningPlayer();
 
-	CollapseTop();
+	//PushedWidget = CreateWidget<UUserWidget>(Owner, UKismetSystemLibrary::LoadClassAsset_Blocking(WidgetClass)); //TODO: update to use async load
 
-	Border->ClearChildren();
+	//CollapseTop();
 
-	Stack.Add(PushedWidget);
+	//Border->ClearChildren();
 
-	Border->AddChild(PushedWidget);
+	//Stack.Add(PushedWidget);
 
-	ShowTop();
+	//Border->AddChild(PushedWidget);
 
-	return PushedWidget;
+	//ShowTop();
+
+	//return PushedWidget;
 }
 
 void UUILayer::PopContent()
@@ -119,4 +116,17 @@ FText UUILayer::GetStackListNames()
 bool UUILayer::IsEmpty() const
 {
 	return Stack.IsEmpty();
+}
+
+void UUILayer::OnWidgetLoaded(UUserWidget* LoadedWidget)
+{
+	CollapseTop();
+
+	Border->ClearChildren();
+
+	Stack.Add(LoadedWidget);
+
+	Border->AddChild(LoadedWidget);
+
+	ShowTop();
 }

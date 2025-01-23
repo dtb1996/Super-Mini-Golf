@@ -15,9 +15,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName LayerName;
 
-	UFUNCTION(BlueprintCallable) //TODO: remove
-	void PushWidget(TSoftClassPtr<UUserWidget> LayerWidget);
-
 	UFUNCTION(BlueprintCallable)
 	UUserWidget* PushContent(TSoftClassPtr<class UUserWidget> WidgetClass);
 
@@ -51,4 +48,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
 	TArray<UUserWidget*> Stack;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RequestAsyncLoadWidget(const TSoftClassPtr<class UUserWidget>& WidgetClass);
+
+	UFUNCTION(BlueprintCallable)
+	void OnWidgetLoaded(UUserWidget* LoadedWidget);
 };

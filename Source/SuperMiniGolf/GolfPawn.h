@@ -8,7 +8,8 @@
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "InputAction.h" 
+#include "InputAction.h"
+#include "Sound/SoundCue.h"
 #include "GolfPawn.generated.h"
 
 UCLASS(Abstract)
@@ -22,6 +23,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void Destroyed() override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* SphereCollision;
 
@@ -29,14 +32,14 @@ protected:
 	UStaticMeshComponent* BallMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UArrowComponent* Arrow;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCameraComponent* Camera;
 	
+	UPROPERTY(BlueprintReadWrite)
+	AActor* SkySphere;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float RollTorque = 5000000.0f;
 
@@ -55,6 +58,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TiltFactorY = 10.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float HitImpulseMin = 10000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundCue* ImpactSound;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* TiltAction;
 
@@ -65,6 +74,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION()
+	void OnMyComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
 	void HandleTiltInputTriggered(const FInputActionValue& Value);
@@ -77,9 +89,10 @@ private:
 
 	void UpdateSpringArmRotation();
 
+	void UpdateSpringArmTargetLength();
+
 	void UpdateSkyRotation();
 
-	void UpdateArrow();
-
 	FVector2D TiltValue;
+
 };

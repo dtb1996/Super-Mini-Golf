@@ -53,10 +53,10 @@ protected:
 	float MaxAngularVelocity = 30.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float TiltFactorX = 15.0f;
+	float TiltFactorX = 20.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float TiltFactorY = 10.0f;
+	float TiltFactorY = 15.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float HitImpulseMin = 10000.0f;

@@ -134,11 +134,6 @@ void UUILayersManagerFunctionLibrary::FocusModal(APlayerController* OwningPlayer
 		return;
 	}
 
-	if (!OwningPlayer)
-	{
-		return;
-	}
-
 	OwningPlayer->SetShowMouseCursor(false);
 
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(OwningPlayer, true);

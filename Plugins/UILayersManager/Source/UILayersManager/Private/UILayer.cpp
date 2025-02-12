@@ -17,6 +17,18 @@ UUserWidget* UUILayer::PushContent(TSoftClassPtr<class UUserWidget> WidgetClass)
 	return nullptr;
 }
 
+void UUILayer::PushContent(TSoftClassPtr<class UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback)
+{
+	if (WidgetClass.IsNull())
+	{
+		return;
+	}
+
+	CallbackRef = Callback;
+
+	RequestAsyncLoadWidget(WidgetClass);
+}
+
 void UUILayer::PopContent()
 {
 	if (IsEmpty())
@@ -113,4 +125,11 @@ void UUILayer::OnWidgetLoaded(UUserWidget* LoadedWidget)
 	Border->AddChild(LoadedWidget);
 
 	ShowTop();
+
+	if (CallbackRef.IsBound())
+	{
+		CallbackRef.Execute(LoadedWidget);
+
+		CallbackRef.Clear();
+	}
 }

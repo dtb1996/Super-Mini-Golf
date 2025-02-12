@@ -51,6 +51,13 @@ UUserWidget* AUIHUD::PushContentToLayer(FGameplayTag LayerName, TSoftClassPtr<cl
 	return Layout->PushContentToLayer(LayerName, WidgetClass);
 }
 
+void AUIHUD::PushContentToLayer(FGameplayTag LayerName, TSoftClassPtr<class UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback)
+{
+	UPrimaryLayout* Layout = GetPrimaryLayout();
+
+	Layout->PushContentToLayer(LayerName, WidgetClass, Callback);
+}
+
 void AUIHUD::PopContentFromLayer(FGameplayTag LayerName)
 {
 	UPrimaryLayout* Layout = GetPrimaryLayout();

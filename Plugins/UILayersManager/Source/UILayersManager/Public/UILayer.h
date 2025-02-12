@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "UILayersManagerFunctionLibrary.h"
 #include "UILayer.generated.h"
 
 UCLASS(Abstract)
@@ -15,28 +16,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName LayerName;
 
-	UFUNCTION(BlueprintCallable)
 	UUserWidget* PushContent(TSoftClassPtr<class UUserWidget> WidgetClass);
 
-	UFUNCTION(BlueprintCallable)
+	void PushContent(TSoftClassPtr<class UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback);
+
 	void PopContent();
 
-	UFUNCTION(BlueprintCallable)
 	void ClearStack();
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UUserWidget* Peek() const;
 
-	UFUNCTION(BlueprintCallable)
 	void CollapseTop();
 
-	UFUNCTION(BlueprintCallable)
 	void ShowTop();
 
 	UFUNCTION(BlueprintCallable)
 	FText GetStackListNames();
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsEmpty() const;
 
 protected:
@@ -54,4 +50,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void OnWidgetLoaded(UUserWidget* LoadedWidget);
+
+	FWidgetLoaderOnCompleteBP CallbackRef;
 };

@@ -38,6 +38,23 @@ UUserWidget* UUILayersManagerFunctionLibrary::PushContentToLayer(APlayerControll
 	return PlayerHUD->PushContentToLayer(LayerName, WidgetClass);
 }
 
+void UUILayersManagerFunctionLibrary::PushContentToLayerWithReturn(APlayerController* OwningPlayer, FGameplayTag LayerName, TSoftClassPtr<UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback)
+{
+	if (!OwningPlayer)
+	{
+		return;
+	}
+
+	AUIHUD* PlayerHUD = Cast<AUIHUD>(OwningPlayer->GetHUD());
+
+	if (!PlayerHUD)
+	{
+		return;
+	}
+
+	PlayerHUD->PushContentToLayer(LayerName, WidgetClass, Callback);
+}
+
 void UUILayersManagerFunctionLibrary::PopContentFromLayer(APlayerController* OwningPlayer, FGameplayTag LayerName)
 {
 	if (!OwningPlayer)

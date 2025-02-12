@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "GameplayTagContainer.h"
 #include "PrimaryLayout.h"
+#include "UILayersManagerFunctionLibrary.h"
 #include "UIHUD.generated.h"
 
 UCLASS(Abstract)
@@ -14,35 +15,26 @@ class UILAYERSMANAGER_API AUIHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-	//Make BlueprintCallable for testing
-	UFUNCTION(BlueprintCallable)
 	void ShowMainMenu();
 
-	UFUNCTION(BlueprintCallable)
 	void HideMainMenu();
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UPrimaryLayout* GetPrimaryLayout() const;
 
-	UFUNCTION(BlueprintCallable)
 	bool RegisterLayer(FGameplayTag LayerName, UUILayer* LayerWidget);
 
-	UFUNCTION(BlueprintCallable)
 	bool UnregisterLayer(FGameplayTag LayerName);
 
-	UFUNCTION(BlueprintCallable)
 	UUserWidget* PushContentToLayer(FGameplayTag LayerName, TSoftClassPtr<class UUserWidget> WidgetClass);
 
-	UFUNCTION(BlueprintCallable)
+	void PushContentToLayer(FGameplayTag LayerName, TSoftClassPtr<class UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback);
+
 	void PopContentFromLayer(FGameplayTag LayerName);
 
-	UFUNCTION(BlueprintCallable)
 	void ClearAllLayers();
 
-	UFUNCTION(BlueprintCallable)
 	void ClearAllLayersExcept(FGameplayTag LayerName);
 
-	UFUNCTION(BlueprintCallable)
 	void ClearLayer(FGameplayTag LayerName);
 
 protected:

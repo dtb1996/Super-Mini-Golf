@@ -56,6 +56,19 @@ UUserWidget* UPrimaryLayout::PushContentToLayer(FGameplayTag LayerName, TSoftCla
 	return Layer->PushContent(WidgetClass);
 }
 
+void UPrimaryLayout::PushContentToLayer(FGameplayTag LayerName, TSoftClassPtr<class UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback)
+{
+	UUILayer** LayerPtr = Layers.Find(LayerName);
+	UUILayer* Layer = *LayerPtr;
+
+	if (!Layer)
+	{
+		return;
+	}
+
+	Layer->PushContent(WidgetClass, Callback);
+}
+
 void UPrimaryLayout::PopContentFromLayer(FGameplayTag LayerName)
 {
 	UUILayer* Layer = *Layers.Find(LayerName);

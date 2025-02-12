@@ -6,6 +6,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "UILayersManagerFunctionLibrary.generated.h"
 
+DECLARE_DYNAMIC_DELEGATE_OneParam(FWidgetLoaderOnCompleteBP, UUserWidget*, Widget);
+
 UCLASS()
 class UILAYERSMANAGER_API UUILayersManagerFunctionLibrary : public UBlueprintFunctionLibrary
 {
@@ -16,6 +18,9 @@ class UILAYERSMANAGER_API UUILayersManagerFunctionLibrary : public UBlueprintFun
 
 	UFUNCTION(BlueprintCallable, Category = "UI Manager")
 	static UUserWidget* PushContentToLayer(APlayerController* OwningPlayer, FGameplayTag LayerName, TSoftClassPtr<UUserWidget> WidgetClass);
+
+	UFUNCTION(BlueprintCallable, Category = "UI Manager")
+	static void PushContentToLayerWithReturn(APlayerController* OwningPlayer, FGameplayTag LayerName, TSoftClassPtr<UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback);
 
 	UFUNCTION(BlueprintCallable, Category = "UI Manager")
 	static void PopContentFromLayer(APlayerController* OwningPlayer, FGameplayTag LayerName);

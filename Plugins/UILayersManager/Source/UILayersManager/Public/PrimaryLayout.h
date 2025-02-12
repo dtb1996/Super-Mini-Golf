@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GameplayTagContainer.h"
 #include "UILayer.h"
+#include "UILayersManagerFunctionLibrary.h"
 #include "PrimaryLayout.generated.h"
 
 UCLASS(Abstract)
@@ -23,22 +24,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool UnregisterLayer(FGameplayTag LayerName);
 
-	UFUNCTION(BlueprintCallable)
 	UUserWidget* PushContentToLayer(FGameplayTag LayerName, TSoftClassPtr<class UUserWidget> WidgetClass);
 
-	UFUNCTION(BlueprintCallable)
+	void PushContentToLayer(FGameplayTag LayerName, TSoftClassPtr<class UUserWidget> WidgetClass, FWidgetLoaderOnCompleteBP Callback);
+
 	void PopContentFromLayer(FGameplayTag LayerName);
 
-	UFUNCTION(BlueprintCallable)
 	void ClearAllLayers();
 
-	UFUNCTION(BlueprintCallable)
 	void ClearAllLayersExcept(FGameplayTag LayerToKeep);
 
-	UFUNCTION(BlueprintCallable)
 	void ClearLayer(FGameplayTag LayerName);
 
-	UFUNCTION(BlueprintCallable)
 	void PushInitialScreens();
 
 protected:

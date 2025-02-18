@@ -4,6 +4,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
 
 AGolfPawn::AGolfPawn()
 {
@@ -69,6 +72,8 @@ void AGolfPawn::OnMyComponentHit(UPrimitiveComponent* HitComponent, AActor* Othe
 	{
 		return;
 	}
+
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactNiagaraEffect, Hit.ImpactPoint, FRotator(0.0f, 0.0f, 0.0f), FVector(1.0f, 1.0f, 1.0f), true, true, ENCPoolMethod::None, false);
 
 	UGameplayStatics::PlaySound2D(GetWorld(), ImpactSound);
 }

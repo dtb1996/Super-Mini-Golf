@@ -12,6 +12,8 @@
 #include "Sound/SoundCue.h"
 #include "GolfPawn.generated.h"
 
+class UNiagaraSystem;
+
 UCLASS(Abstract)
 class SUPERMINIGOLF_API AGolfPawn : public APawn
 {
@@ -63,6 +65,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USoundCue* ImpactSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UNiagaraSystem* ImpactNiagaraEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* TiltAction;

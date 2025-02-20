@@ -73,7 +73,7 @@ void AGolfPawn::OnMyComponentHit(UPrimitiveComponent* HitComponent, AActor* Othe
 		return;
 	}
 
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactNiagaraEffect, Hit.ImpactPoint, FRotator(0.0f, 0.0f, 0.0f), FVector(1.0f, 1.0f, 1.0f), true, true, ENCPoolMethod::None, false);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactNiagaraEffect, Hit.ImpactPoint, FRotator(0.0f, 0.0f, 0.0f), SphereCollision->GetComponentScale(), true, true, ENCPoolMethod::None, false);
 
 	UGameplayStatics::PlaySound2D(GetWorld(), ImpactSound);
 }

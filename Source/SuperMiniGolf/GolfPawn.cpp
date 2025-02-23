@@ -63,6 +63,8 @@ void AGolfPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(TiltAction, ETriggerEvent::Completed, this, &AGolfPawn::HandleTiltInputCompleted);
 
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGolfPawn::HandleLookInputTriggered);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Started, this, &AGolfPawn::HandleLookInputStarted);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Completed, this, &AGolfPawn::HandleLookInputCompleted);
 	}
 }
 
@@ -90,7 +92,12 @@ void AGolfPawn::HandleTiltInputTriggered(const FInputActionValue& Value)
 
 	FVector Torque = (ForwardTorque * TiltValue.Y) + (RightTorque * -TiltValue.X);
 
-	SphereCollision->AddTorqueInRadians(Torque, NAME_None, true);		
+	SphereCollision->AddTorqueInRadians(Torque, NAME_None, true);
+
+	if (!bIsLookInputActive)
+	{
+		AddControllerYawInput(TiltValue.X * TiltYawInputFactorX);
+	}
 }
 
 void AGolfPawn::HandleTiltInputStarted(const FInputActionValue& Value)
@@ -109,6 +116,16 @@ void AGolfPawn::HandleLookInputTriggered(const FInputActionValue& Value)
 	FVector2D LookValue = Value.Get<FVector2D>();
 
 	AddControllerYawInput(LookValue.X);
+}
+
+void AGolfPawn::HandleLookInputStarted(const FInputActionValue& Value)
+{
+	bIsLookInputActive = true;
+}
+
+void AGolfPawn::HandleLookInputCompleted(const FInputActionValue& Value)
+{
+	bIsLookInputActive = false;
 }
 
 void AGolfPawn::UpdateSpringArmRotation()

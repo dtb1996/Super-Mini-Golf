@@ -61,6 +61,9 @@ protected:
 	float TiltFactorY = 15.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float TiltYawInputFactorX = 0.3f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float HitImpulseMin = 10000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -92,6 +95,10 @@ private:
 
 	void HandleLookInputTriggered(const FInputActionValue& Value);
 
+	void HandleLookInputStarted(const FInputActionValue& Value);
+	
+	void HandleLookInputCompleted(const FInputActionValue& Value);
+
 	void UpdateSpringArmRotation();
 
 	void UpdateSpringArmTargetLength();
@@ -100,4 +107,5 @@ private:
 
 	FVector2D TiltValue;
 
+	bool bIsLookInputActive = false;
 };

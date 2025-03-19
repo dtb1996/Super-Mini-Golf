@@ -66,6 +66,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float HitImpulseMin = 10000.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsTiltTurnEnabled = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USoundCue* ImpactSound;
 

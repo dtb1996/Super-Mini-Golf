@@ -94,7 +94,7 @@ void AGolfPawn::HandleTiltInputTriggered(const FInputActionValue& Value)
 
 	SphereCollision->AddTorqueInRadians(Torque, NAME_None, true);
 
-	if (!bIsLookInputActive)
+	if (!bIsLookInputActive && bIsTiltTurnEnabled)
 	{
 		AddControllerYawInput(TiltValue.X * TiltYawInputFactorX);
 	}

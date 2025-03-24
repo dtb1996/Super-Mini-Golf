@@ -77,7 +77,7 @@ void AGolfPawn::OnMyComponentHit(UPrimitiveComponent* HitComponent, AActor* Othe
 
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactNiagaraEffect, Hit.ImpactPoint, FRotator(0.0f, 0.0f, 0.0f), SphereCollision->GetComponentScale(), true, true, ENCPoolMethod::None, false);
 
-	UGameplayStatics::PlaySound2D(GetWorld(), ImpactSound);
+	UGameplayStatics::PlaySound2D(GetWorld(), ImpactSound, 1.0f, 1.0f, 0.0f, ImpactConcurrencySettings, nullptr, false);
 }
 
 void AGolfPawn::HandleTiltInputTriggered(const FInputActionValue& Value)

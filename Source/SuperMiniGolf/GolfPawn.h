@@ -13,6 +13,7 @@
 #include "GolfPawn.generated.h"
 
 class UNiagaraSystem;
+//class USoundConcurrency;
 
 UCLASS(Abstract)
 class SUPERMINIGOLF_API AGolfPawn : public APawn
@@ -71,6 +72,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USoundCue* ImpactSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundConcurrency* ImpactConcurrencySettings;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UNiagaraSystem* ImpactNiagaraEffect;

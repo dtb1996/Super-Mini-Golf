@@ -13,7 +13,6 @@
 #include "GolfPawn.generated.h"
 
 class UNiagaraSystem;
-//class USoundConcurrency;
 
 UCLASS(Abstract)
 class SUPERMINIGOLF_API AGolfPawn : public APawn

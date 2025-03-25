@@ -11,4 +11,5 @@ enum class EGameStates : uint8
 	Active,
 	GoalReached,
 	Failed,
+	ChangingLevel,
 };

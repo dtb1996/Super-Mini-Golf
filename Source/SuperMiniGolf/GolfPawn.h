@@ -46,6 +46,9 @@ protected:
 	float RollTorque = 5000000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RedirectForce = 200000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TiltAngularDamping = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -68,6 +71,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsTiltTurnEnabled = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
+	bool bDebugDraw = false;	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USoundCue* ImpactSound;
@@ -105,13 +111,21 @@ private:
 	
 	void HandleLookInputCompleted(const FInputActionValue& Value);
 
+	void UpdateIsOnGround();
+
 	void UpdateSpringArmRotation();
 
 	void UpdateSpringArmTargetLength();
 
 	void UpdateSkyRotation();
 
+	void ApplyRedirectForce();
+
 	FVector2D TiltValue;
+
+	FVector DesiredVector;
+
+	bool bIsOnGround = false;
 
 	bool bIsLookInputActive = false;
 };

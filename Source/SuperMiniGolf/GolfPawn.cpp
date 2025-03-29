@@ -43,11 +43,15 @@ void AGolfPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	UpdateIsOnGround();
+
 	UpdateSpringArmRotation();
 
 	UpdateSpringArmTargetLength();
 
 	UpdateSkyRotation();
+
+	ApplyRedirectForce();
 }
 
 void AGolfPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -98,6 +102,9 @@ void AGolfPawn::HandleTiltInputTriggered(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(TiltValue.X * TiltYawInputFactorX);
 	}
+
+	FRotator Rotation(0.0f, 90.0f, 0.0f); // Rotate 90 degrees around Z-axis (Yaw)
+	DesiredVector = -(Rotation.RotateVector(Torque).GetSafeNormal(0.0001f));
 }
 
 void AGolfPawn::HandleTiltInputStarted(const FInputActionValue& Value)
@@ -109,6 +116,8 @@ void AGolfPawn::HandleTiltInputCompleted(const FInputActionValue& Value)
 {
 	TiltValue = FVector2D();
 	SphereCollision->SetAngularDamping(NormalAngularDamping);
+
+	DesiredVector = FVector(0.0f, 0.0f, 0.0f);
 }
 
 void AGolfPawn::HandleLookInputTriggered(const FInputActionValue& Value)
@@ -128,8 +137,33 @@ void AGolfPawn::HandleLookInputCompleted(const FInputActionValue& Value)
 	bIsLookInputActive = false;
 }
 
+void AGolfPawn::UpdateIsOnGround()
+{
+	FHitResult Hit = FHitResult();
+
+	FVector Start = GetActorLocation();
+	FVector End = FVector(Start.X, Start.Y, Start.Z - 55.0f);
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(GetOwner());
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECollisionChannel::ECC_Visibility, QueryParams);
+
+	if (bDebugDraw)
+	{
+		DrawDebugLine(GetWorld(), Start, End, bHit ? FColor::Green : FColor::Red, false, 2.0f, 0, 2.0f);
+	}
+
+	bIsOnGround = bHit;
+}
+
 void AGolfPawn::UpdateSpringArmRotation()
 {
+	if (!SpringArm)
+	{
+		return;
+	}
+	
 	FRotator CurrentRotation = SpringArm->GetRelativeRotation();
 
 	float TargetX = TiltValue.X * -TiltFactorX;
@@ -146,6 +180,11 @@ void AGolfPawn::UpdateSpringArmRotation()
 
 void AGolfPawn::UpdateSpringArmTargetLength()
 {
+	if (!SphereCollision)
+	{
+		return;
+	}
+
 	float Velocity = SphereCollision->GetComponentVelocity().Size();
 
 	float NewTargetLength = FMath::GetMappedRangeValueClamped(FVector2D(0.0f, 1500.0f), FVector2D(500.0f, 800.0f), Velocity);
@@ -163,4 +202,27 @@ void AGolfPawn::UpdateSkyRotation()
 	}
 
 	SkySphere->SetActorRelativeRotation(FRotator(0.0f, -GetControlRotation().Yaw, 0.0f));
+}
+
+void AGolfPawn::ApplyRedirectForce()
+{
+	if (!SphereCollision)
+	{
+		return;
+	}
+
+	FVector ActualVector = SphereCollision->GetComponentVelocity().GetSafeNormal(0.0001f);
+
+	// Compute dot product and angle in degrees
+	float DotProduct = FVector::DotProduct(DesiredVector, ActualVector);
+	float AngleInDegrees = FMath::Acos(DotProduct) * (180.0f / UE_DOUBLE_PI);
+
+	float ForceScale = (AngleInDegrees / 180.0f) * RedirectForce;
+
+	// Select float based on whether the actor is on the ground
+	float GroundMultiplier = bIsOnGround ? 1.0f : 0.5f;
+	
+	FVector ForceToApply = DesiredVector * (ForceScale * GroundMultiplier);
+
+	SphereCollision->AddForce(ForceToApply);
 }

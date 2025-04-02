@@ -16,7 +16,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Info")
 	void SetPlayerStats(const int PlayerId, const FPlayerStats NewPlayerStats);
 
-	UFUNCTION(BlueprintCallable, /*BlueprintPure,*/ Category = "Player Info")
+	UFUNCTION(BlueprintCallable, Category = "Player Info")
 	const FPlayerStats GetPlayerStats(const int PlayerId, bool& Found) const;
 
 	UFUNCTION(BlueprintCallable, Category = "Player Info")
